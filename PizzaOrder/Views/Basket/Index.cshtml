@@ -1,0 +1,132 @@
+﻿@model PizzaOrder.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "Kosár";
+}
+
+
+<h3>Kosár</h3>
+<hr />
+
+@if (Model.Food.Any())
+{
+    <div asp-validation-summary="ModelOnly"></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Termékek:
+                </th>
+                <th>
+                    Leírás:
+                </th>
+                <th>
+                    Ár:
+                </th>
+                <th>
+                    Mennyiség:
+                </th>
+                <th>
+                    Részösszeg:
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Tuple<Order.Persistence.Menu, int> food in Model.Food)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => food.Item1.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => food.Item1.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => food.Item1.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => food.Item2)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", food.Item2 * food.Item1.Price)
+                    </td>
+                    <td>
+                        <a asp-controller="Basket" asp-action="EditBasket" asp-route-deincrease=@(2)
+                           asp-route-foodID="@food.Item1.ID">
+                            <input type="button" value="+" />
+                        </a>
+                        <a asp-controller="Basket" asp-action="EditBasket" asp-route-deincrease=@(1)
+                           asp-route-foodID="@food.Item1.ID">
+                            <input type="button" value="-" />
+                        </a>
+                        <a asp-controller="Basket" asp-action="EditBasket"
+                           asp-route-foodID="@food.Item1.ID">
+                            <input type="button" value="Törlés" />
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-controller="Basket" asp-action="BasketClear" class="pull-right">
+        <input type="button" value="Kosár kiürítése" />
+    </a>
+
+    <i>Összesen fizetendő: @string.Format("{0:C}", Model.FullPrice) </i>
+    <hr />
+    <form asp-controller="Basket" asp-action="Index">
+        <table>
+
+
+
+            <tr>
+                <td>
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" size="40" class="form-control" />
+                </td>
+                <td>
+                    <span asp-validation-for="Name"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" size="40" class="form-control" />
+                </td>
+                <td>
+                    <span asp-validation-for="Address"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" size="40" class="form-control" />
+                </td>
+                <td>
+                    <span asp-validation-for="PhoneNumber"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Megrendelés" class="btn btn-default" />
+                </td>
+            </tr>
+        </table>
+    </form>
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+    @if (Model.FailNumber == 1)
+    {
+        <script type="text/javascript">
+            alert("A kosarában maximum 20000 Ft értékű árú lehet");
+        </script>
+    }
+}
+else
+{
+    <i>A kosarad üres.</i>
+}

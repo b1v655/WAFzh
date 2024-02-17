@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model PizzaOrder.Models.HomeViewModel
+
+<h3> Főoldal </h3>
+<table class="categoryTable">
+    <thead>
+        <tr>
+            <th>
+
+                Kategórák:
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Category)
+        {
+            <tr>
+                <th>
+                    <a asp-controller="Order" asp-action="Index" asp-route-category=@item.ID>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr>
+<h4> Legnépszerűbb ajánlatok: </h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Név:
+            </th>
+            <th>
+                Ár:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Menu)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </th>
+            </tr>
+
+        }
+    </tbody>
+</table>

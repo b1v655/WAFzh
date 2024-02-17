@@ -1,0 +1,144 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+@model PizzaOrder.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Étlap";
+}
+
+<table class="categoryTable">
+    <thead>
+        <tr>
+            <th>
+
+                Kategórák:
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Category)
+        {
+            <tr>
+                <th>
+                    <a asp-controller="Order" asp-action="Index" asp-route-category=@item.ID>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@foreach (var item in Model.Category)
+{
+    if (item.ID == Model.ActualCategory)
+    {
+
+        <h3>@item.Name</h3>
+    }
+}
+
+
+<tr>
+    <th>
+        <form asp-controller="Order" asp-action="Index" asp-route-category=@Model.ActualCategory>
+            <p>
+                <input type="text" name="Filter" value="">
+                <input type="submit" value="Szűrés névre" />
+            </p>
+        </form>
+    </th>
+</tr>
+
+@if (Model.Menu != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th>
+                    Név:
+                </th>
+                <th>
+                    Leírás:
+                </th>
+                <th>
+                    Ár:
+                </th>
+                <th>
+                    Csípős:
+                </th>
+                <th>
+                    Vegetáriáus:
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Menu)
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    @if (!item.Spicy)
+                    {
+                        <td>
+                            <p>nem</p>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <font color="Red"> igen </font>
+                        </td>
+                    }
+                    @if (!item.Vegetarian)
+                    {
+                        <td>
+                            <p>nem</p>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <font color="Green"> igen </font>
+                        </td>
+                    }
+                    <td>
+                        <a asp-controller="Order" asp-action="Index" asp-route-category=@Model.ActualCategory
+                           asp-route-foodID="@item.ID">
+                            Hozzáad
+                        </a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.FailNumber == 1)
+    {
+        <script type="text/javascript">
+            alert("A kosarában maximum 20000 Ft értékű árú lehet");
+
+        </script>
+
+    }
+    @if (Model.FailNumber == 2)
+    {
+        <script type="text/javascript">
+            alert("Hozzáadtuk a kosárhoz.");
+        </script>
+    }
+}
+else
+{
+   <p>Nincs találat!</p>
+}

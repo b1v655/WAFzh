@@ -1,0 +1,40 @@
+﻿<Window x:Class="Order.WPF.View.OrdersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Order.WPF.View"
+        mc:Ignorable="d"
+        Title="Rendelések" Height="380" Width="600">
+    <StackPanel Margin="0,0,2,2">
+        
+        <DataGrid x:Name="Orders" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding Orders}" Margin="0,10,0,10" Height="200" SelectedItem="{Binding SelectedOrder}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Leadás időpontja" Binding="{Binding OrderDate}" Width="200"/>
+                <DataGridTextColumn Header="Teljesítés időpontja" Binding="{Binding OutDate}" Width="200"/>
+                <DataGridTextColumn Header="Név" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Cím" Binding="{Binding Address}" Width="200"/>
+                <DataGridTextColumn Header="Telefonszám" Binding="{Binding PhoneNumber}" Width="200"/>
+                <DataGridTextColumn Header="Ár" Binding="{Binding FullPrice}" Width="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <Button Command="{Binding IsAccomplishedCommand}" CommandParameter="{Binding SelectedOrder}" Margin="10,0,10,0" Width="105" >Rendelés teljesítve</Button>
+            <Button Command="{Binding ListingCommand}" CommandParameter="{Binding SelectedOrder}" Margin="10,0,10,0" Width="100">Ételek listázása</Button>
+            <Button Command="{Binding RefreshCommand}" Margin="10,0,10,0" Width="100">Frissítés</Button>
+            <Button Command="{Binding CancelCommand}" Margin="10,0,0,0" Width="100">Vissza</Button>
+        </StackPanel>
+       
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <Button Command="{Binding JustAccomplishedCommand}" Margin="10,0,10,0" Width="100" >Csak teljesített</Button>
+            <Button Command="{Binding JustNotAccomplishedCommand}" Margin="10,0,10,0" Width="100">Nem teljesített</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBox x:Name="TextBox001" Margin="10, 0 ,10, 0" Width="100" Text="{Binding Filter}"></TextBox>
+            <Button Command="{Binding FilterNameCommand}"  Margin="10,0,10,0" Width="100" >Szűrés névre</Button>
+            <Button Command="{Binding FilterAddressCommand}" Margin="10,0,10,0" Width="100">Szűrés címre</Button>
+        </StackPanel>
+        
+    </StackPanel>
+   
+</Window>
